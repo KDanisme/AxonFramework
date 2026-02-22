@@ -80,7 +80,7 @@ import java.util.function.Supplier;
  * @since 5.1.0
  */
 @Internal
-//@Singleton
+@Singleton
 public class MicronautComponentRegistry implements ComponentRegistry, BeanCreatedEventListener<Object> {
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

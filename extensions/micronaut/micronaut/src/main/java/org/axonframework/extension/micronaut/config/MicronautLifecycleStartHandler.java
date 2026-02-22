@@ -18,6 +18,7 @@ package org.axonframework.extension.micronaut.config;
 
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.event.StartupEvent;
+import io.micronaut.core.order.Ordered;
 import io.micronaut.runtime.event.annotation.EventListener;
 import jakarta.annotation.PreDestroy;
 import jakarta.inject.Provider;
@@ -39,10 +40,11 @@ import java.util.concurrent.ExecutionException;
  */
 @Internal
 //@Singleton
-public class MicronautLifecycleStartHandler {
+public class MicronautLifecycleStartHandler implements Ordered {
 
     private final Provider<Configuration> configurationProvider;
     private final LifecycleHandler lifecycleHandler;
+    private final int order;
     private CompletableFuture<?> lifecycleHandlerRunTask;
 
     /**
@@ -50,10 +52,16 @@ public class MicronautLifecycleStartHandler {
      *
      */
     MicronautLifecycleStartHandler(
-            Provider<Configuration> configurationProvider, @Parameter LifecycleHandler lifecycleHandler
+            Provider<Configuration> configurationProvider, @Parameter int order,@Parameter LifecycleHandler lifecycleHandler
     ) {
         this.configurationProvider = configurationProvider;
         this.lifecycleHandler = lifecycleHandler;
+        this.order = order;
+    }
+
+    @Override
+    public int getOrder() {
+        return order;
     }
 
     @EventListener
